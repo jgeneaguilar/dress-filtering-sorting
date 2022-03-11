@@ -1,0 +1,8 @@
+.menuBar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.menuFilters {
+  display: flex;
+}
