@@ -1,18 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '../../shared/button/Button';
+import { Chip } from '../../shared/chip/Chip';
 import { DropdownFilter } from '../dropdown-filter/DropdownFilter';
 import { getOptions } from './MenuBar.helpers';
 import './MenuBar.css';
 
-export const MenuBar = ({ dresses, onFilterDress }) => {
+export const MenuBar = ({
+  dresses,
+  sortOrder,
+  onFilterDress,
+  onToggleSortOrder,
+}) => {
   const [colorFilters, setColorFilters] = useState([]);
   const [sizeFilters, setSizeFilters] = useState([]);
   console.log(colorFilters);
   const selectedFilters = colorFilters.concat(sizeFilters);
+  const sortButtonName =
+    sortOrder === 'asc' ? 'Price: Low to High' : 'Price: High to Low';
 
   useEffect(() => {
     updateFilters(sizeFilters, colorFilters);
   }, [colorFilters, sizeFilters]);
+
+  function handleRemoveFilter(filter) {
+    console.log('remove filter', filter);
+  }
 
   function handleSelectColorFilter(colors) {
     setColorFilters(colors);
@@ -45,7 +57,7 @@ export const MenuBar = ({ dresses, onFilterDress }) => {
             onSelectFilters={handleSelectSizeFilter}
           />
         </div>
-        <Button name="Sort" />
+        <Button name={sortButtonName} onClick={onToggleSortOrder} />
       </div>
       <div>
         {selectedFilters.length > 0 ? (

@@ -18,5 +18,6 @@ export function getOptions(arr, key) {
   }, []);
 
   const ascendingFn = (a, b) => (a.value < b.value ? -1 : 1);
+
   return options.sort(ascendingFn);
 }

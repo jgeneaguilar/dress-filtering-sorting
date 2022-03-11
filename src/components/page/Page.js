@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { dressData } from '../../dressData';
 import { MenuBar } from '../menu-bar/MenuBar';
+import { sortDressesByPrice } from './Page.helpers';
 
 export const Page = () => {
   const [filteredDresses, setFilteredDresses] = useState(dressData);
+  const [sortOrder, setSortOrder] = useState('asc');
+
+  const sortedDresses = sortDressesByPrice(filteredDresses, sortOrder);
 
   function handleFilterDress(sizes, colors) {
-    console.log('FILTER DRESS FUNC', sizes, colors);
-
     setFilteredDresses(
       dressData.filter(
         (d) =>
@@ -18,14 +20,23 @@ export const Page = () => {
   }
   console.log('FILTERED DRESSES', filteredDresses);
 
+  function handleToggleSortOrder() {
+    setSortOrder((prevState) => (prevState === 'asc' ? 'desc' : 'asc'));
+  }
+
   return (
     <>
       <div className="dressFilters">
-        <MenuBar dresses={dressData} onFilterDress={handleFilterDress} />
+        <MenuBar
+          dresses={dressData}
+          sortOrder={sortOrder}
+          onFilterDress={handleFilterDress}
+          onToggleSortOrder={handleToggleSortOrder}
+        />
       </div>
       <div className="dressSortResults">
-        {filteredDresses.map((dressDataItem) => (
-          <div className="dressGridItem">
+        {sortedDresses.map((dressDataItem) => (
+          <div className="dressGridItem" key={dressDataItem.dress_id}>
             <div className="dressGridImgContainer">
               <img
                 alt={`${dressDataItem.color}-size-${dressDataItem.size}`}
