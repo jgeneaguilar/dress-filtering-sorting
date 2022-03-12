@@ -77,6 +77,13 @@ export const MenuBar = ({
     ));
   }
 
+  const hasFilters = colorFilters.length > 0 || sizeFilters.length > 0;
+
+  function handleClearFilters() {
+    setColorFilters([]);
+    setSizeFilters([]);
+  }
+
   return (
     <>
       <div className="menuBar">
@@ -106,6 +113,7 @@ export const MenuBar = ({
       <div className="menuFilters">
         {renderColorFilters()}
         {renderSizeFilters()}
+        {hasFilters && <Chip name="Clear all" onRemove={handleClearFilters} />}
       </div>
     </>
   );

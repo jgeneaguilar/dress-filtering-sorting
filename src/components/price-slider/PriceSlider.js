@@ -17,6 +17,10 @@ export const PriceSlider = ({ defaultRange, priceRange, onPriceChange }) => {
     onPriceChange(value);
   }
 
+  function handleSliderClear() {
+    onPriceChange(defaultRange);
+  }
+
   return (
     <>
       <div className="priceSlider">
@@ -33,10 +37,16 @@ export const PriceSlider = ({ defaultRange, priceRange, onPriceChange }) => {
               { backgroundColor: '#7455E3', borderColor: '#7455E3' },
             ]}
             trackStyle={[{ backgroundColor: '#7455E3' }]}
+            value={priceRange}
             onChange={handleSliderChange}
           />
           <div className="priceRange">
             <span>{`$${priceRange[0]} - $${priceRange[1]}`}</span>
+          </div>
+          <div>
+            <button type="button" onClick={handleSliderClear}>
+              Clear
+            </button>
           </div>
         </div>
       )}
