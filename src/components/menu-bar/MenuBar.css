@@ -5,4 +5,9 @@
 
 .menuFilters {
   display: flex;
+  padding: 4px 16px;
+}
+
+.menuFilters * {
+  margin-right: 4px;
 }

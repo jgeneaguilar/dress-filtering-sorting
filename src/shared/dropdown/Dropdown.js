@@ -18,7 +18,7 @@ export const Dropdown = ({
 
   return (
     <div className="dropdown" onClick={onClick}>
-      <Button name={name} />
+      <Button>{name}</Button>
       {isOpen && (
         <div className="list" role="list">
           {hasOptions &&
@@ -26,11 +26,6 @@ export const Dropdown = ({
               <button
                 key={`${option.type}-${option.value}`}
                 type="button"
-                isSelected={
-                  !!selectedOptions.find(
-                    (selected) => selected.value === option.value
-                  )
-                }
                 onClick={() => handleItemClick(option)}
               >
                 {option.name}

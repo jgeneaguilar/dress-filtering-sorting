@@ -53,6 +53,7 @@
   text-align: left;
   width: 700px;
   margin: 20px auto;
+  display: none;
 }
 
 @keyframes App-logo-spin {

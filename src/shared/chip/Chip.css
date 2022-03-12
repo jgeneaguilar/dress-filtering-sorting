@@ -1,0 +1,10 @@
+.chip {
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  padding: 8px 12px;
+  min-width: 30px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  color: #222;
+}

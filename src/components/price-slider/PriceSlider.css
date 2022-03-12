@@ -1,0 +1,21 @@
+.priceSlider {
+  display: flex;
+}
+
+.priceDropdown {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: rgb(0 0 0 / 10%) 0px 10px 25px !important;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  height: 50px;
+  width: 200px;
+  transform: translateY(50px);
+  padding: 32px;
+  z-index: 100;
+}
+
+.priceRange {
+  margin: 16px;
+}

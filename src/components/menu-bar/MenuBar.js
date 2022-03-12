@@ -2,7 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '../../shared/button/Button';
 import { Chip } from '../../shared/chip/Chip';
 import { DropdownFilter } from '../dropdown-filter/DropdownFilter';
-import { getOptions } from './MenuBar.helpers';
+import {
+  getOptions,
+  toggleFilter,
+  MIN_PRICE,
+  MAX_PRICE,
+} from './MenuBar.helpers';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faArrowUpShortWide,
+  faArrowDownShortWide,
+} from '@fortawesome/free-solid-svg-icons';
+
+import { PriceSlider } from '../price-slider/PriceSlider';
 import './MenuBar.css';
 
 export const MenuBar = ({
@@ -13,60 +25,87 @@ export const MenuBar = ({
 }) => {
   const [colorFilters, setColorFilters] = useState([]);
   const [sizeFilters, setSizeFilters] = useState([]);
-  console.log(colorFilters);
-  const selectedFilters = colorFilters.concat(sizeFilters);
-  const sortButtonName =
-    sortOrder === 'asc' ? 'Price: Low to High' : 'Price: High to Low';
+  const [priceRange, setPriceRange] = useState([MIN_PRICE, MAX_PRICE]);
+
+  const sortIcon =
+    sortOrder === 'asc' ? faArrowUpShortWide : faArrowDownShortWide;
 
   useEffect(() => {
-    updateFilters(sizeFilters, colorFilters);
-  }, [colorFilters, sizeFilters]);
+    updateFilters();
+    // eslint-disable-next-line
+  }, [colorFilters, sizeFilters, priceRange]);
 
-  function handleRemoveFilter(filter) {
-    console.log('remove filter', filter);
+  function handleToggleColorFilter(filter) {
+    const updatedFilters = toggleFilter(colorFilters, filter);
+    setColorFilters(updatedFilters);
   }
 
-  function handleSelectColorFilter(colors) {
-    setColorFilters(colors);
+  function handleToggleSizeFilter(filter) {
+    const updatedFilters = toggleFilter(sizeFilters, filter);
+    setSizeFilters(updatedFilters);
   }
 
-  function handleSelectSizeFilter(sizes) {
-    setSizeFilters(sizes);
+  function handlePriceRangeChange(value) {
+    setPriceRange(value);
   }
 
   function updateFilters() {
     onFilterDress(
       sizeFilters.map((s) => s.value),
-      colorFilters.map((c) => c.value)
+      colorFilters.map((c) => c.value),
+      priceRange
     );
+  }
+
+  function renderColorFilters() {
+    return colorFilters.map((filter) => (
+      <Chip
+        key={filter.name}
+        name={filter.name}
+        onRemove={() => handleToggleColorFilter(filter)}
+      />
+    ));
+  }
+
+  function renderSizeFilters() {
+    return sizeFilters.map((filter) => (
+      <Chip
+        key={filter.name}
+        name={filter.name}
+        onRemove={() => handleToggleSizeFilter(filter)}
+      />
+    ));
   }
 
   return (
     <>
       <div className="menuBar">
         <div className="menuFilters">
-          <Button name="Price" />
+          <PriceSlider
+            defaultRange={[MIN_PRICE, MAX_PRICE]}
+            priceRange={priceRange}
+            onPriceChange={handlePriceRangeChange}
+          />
           <DropdownFilter
             filterName="Color"
             options={getOptions(dresses, 'color')}
-            onSelectFilters={handleSelectColorFilter}
+            onToggleFilter={handleToggleColorFilter}
           />
           <DropdownFilter
             filterName="Size"
             options={getOptions(dresses, 'size')}
-            onSelectFilters={handleSelectSizeFilter}
+            onToggleFilter={handleToggleSizeFilter}
           />
         </div>
-        <Button name={sortButtonName} onClick={onToggleSortOrder} />
+
+        <Button onClick={onToggleSortOrder}>
+          <FontAwesomeIcon icon={sortIcon} /> Price
+        </Button>
       </div>
-      <div>
-        {selectedFilters.length > 0 ? (
-          selectedFilters.map((filter) => (
-            <button key={filter.name}>{filter.name}</button>
-          ))
-        ) : (
-          <></>
-        )}
+
+      <div className="menuFilters">
+        {renderColorFilters()}
+        {renderSizeFilters()}
       </div>
     </>
   );
