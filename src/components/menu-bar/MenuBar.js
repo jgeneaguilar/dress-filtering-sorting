@@ -104,17 +104,20 @@ export const MenuBar = ({
             onToggleFilter={handleToggleSizeFilter}
           />
         </div>
-
-        <Button onClick={onToggleSortOrder}>
-          <FontAwesomeIcon icon={sortIcon} /> Price
-        </Button>
+        <div className="menuSort">
+          <Button onClick={onToggleSortOrder}>
+            <FontAwesomeIcon icon={sortIcon} /> Price
+          </Button>
+        </div>
       </div>
 
-      <div className="menuFilters">
-        {renderColorFilters()}
-        {renderSizeFilters()}
-        {hasFilters && <Chip name="Clear all" onRemove={handleClearFilters} />}
-      </div>
+      {hasFilters && (
+        <div className="menuFilters">
+          {renderColorFilters()}
+          {renderSizeFilters()}
+          <Chip name="Clear all" onRemove={handleClearFilters} />
+        </div>
+      )}
     </>
   );
 };
