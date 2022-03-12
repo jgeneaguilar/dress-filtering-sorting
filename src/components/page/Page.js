@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { dressData } from '../../dressData';
 import { MenuBar } from '../menu-bar/MenuBar';
 import { sortDressesByPrice } from './Page.helpers';
+import './Page.css';
 
 export const Page = () => {
   const [filteredDresses, setFilteredDresses] = useState(dressData);
@@ -33,6 +34,8 @@ export const Page = () => {
     setSortOrder((prevState) => (prevState === 'asc' ? 'desc' : 'asc'));
   }
 
+  const isEmpty = sortedDresses.length === 0;
+
   return (
     <>
       <div className="dressFilters">
@@ -43,22 +46,25 @@ export const Page = () => {
           onToggleSortOrder={handleToggleSortOrder}
         />
       </div>
-      <div className="dressSortResults">
-        {sortedDresses.map((dressDataItem) => (
-          <div className="dressGridItem" key={dressDataItem.dress_id}>
-            <div className="dressGridImgContainer">
-              <img
-                alt={`${dressDataItem.color}-size-${dressDataItem.size}`}
-                src={dressDataItem['photo_url']}
-                width={150}
-              />
+      {!isEmpty && (
+        <div className="dressSortResults">
+          {sortedDresses.map((dressDataItem) => (
+            <div className="dressGridItem" key={dressDataItem.dress_id}>
+              <div className="dressGridImgContainer">
+                <img
+                  alt={`${dressDataItem.color}-size-${dressDataItem.size}`}
+                  src={dressDataItem['photo_url']}
+                  width={150}
+                />
+              </div>
+              <div>${dressDataItem['price']}</div>
+              <div>Size {dressDataItem['size']}</div>
+              <div>Color: {dressDataItem['color']}</div>
             </div>
-            <div>${dressDataItem['price']}</div>
-            <div>Size {dressDataItem['size']}</div>
-            <div>Color: {dressDataItem['color']}</div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
+      {isEmpty && <div className="noResult">No dresses found</div>}
     </>
   );
 };
