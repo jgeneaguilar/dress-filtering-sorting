@@ -4,8 +4,14 @@ import { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import './PriceSlider.css';
 
-export const PriceSlider = ({ defaultRange, priceRange, onPriceChange }) => {
-  const [minPrice, maxPrice] = defaultRange;
+export const PriceSlider = ({
+  defaultRange,
+  name,
+  range,
+  step,
+  onRangeChange,
+}) => {
+  const [min, max] = defaultRange;
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -14,34 +20,39 @@ export const PriceSlider = ({ defaultRange, priceRange, onPriceChange }) => {
   }
 
   function handleSliderChange(value) {
-    onPriceChange(value);
+    onRangeChange(value);
   }
 
   function handleSliderClear() {
-    onPriceChange(defaultRange);
+    onRangeChange(defaultRange);
   }
 
   return (
     <>
       <div className="priceSlider">
-        <Button onClick={handleToggleSlider}>Price</Button>
+        <Button onClick={handleToggleSlider}>{name}</Button>
       </div>
       {isOpen && (
         <div className="priceDropdown">
           <Range
-            defaultValue={priceRange}
-            min={minPrice}
-            max={maxPrice}
+            defaultValue={range}
+            min={min}
+            max={max}
             handleStyle={[
               { backgroundColor: '#7455E3', borderColor: '#7455E3' },
               { backgroundColor: '#7455E3', borderColor: '#7455E3' },
             ]}
+            step={step}
             trackStyle={[{ backgroundColor: '#7455E3' }]}
-            value={priceRange}
+            value={range}
             onChange={handleSliderChange}
           />
           <div className="priceRange">
-            <span>{`$${priceRange[0]} - $${priceRange[1]}`}</span>
+            {name === 'Price' ? (
+              <span>{`$${range[0]} - $${range[1]}`}</span>
+            ) : (
+              <span>{`${range[0]} - ${range[1]}`}</span>
+            )}
           </div>
           <div>
             <button type="button" onClick={handleSliderClear}>

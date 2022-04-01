@@ -17,6 +17,9 @@ import {
 import { PriceSlider } from '../price-slider/PriceSlider';
 import './MenuBar.css';
 
+const MIN_SIZE = 0;
+const MAX_SIZE = 20;
+
 export const MenuBar = ({
   dresses,
   sortOrder,
@@ -26,6 +29,7 @@ export const MenuBar = ({
   const [colorFilters, setColorFilters] = useState([]);
   const [sizeFilters, setSizeFilters] = useState([]);
   const [priceRange, setPriceRange] = useState([MIN_PRICE, MAX_PRICE]);
+  const [sizeRange, setSizeRange] = useState([MIN_SIZE, MAX_SIZE]);
 
   const sortIcon =
     sortOrder === 'asc' ? faArrowUpShortWide : faArrowDownShortWide;
@@ -33,7 +37,7 @@ export const MenuBar = ({
   useEffect(() => {
     updateFilters();
     // eslint-disable-next-line
-  }, [colorFilters, sizeFilters, priceRange]);
+  }, [colorFilters, sizeFilters, priceRange, sizeRange]);
 
   function handleToggleColorFilter(filter) {
     const updatedFilters = toggleFilter(colorFilters, filter);
@@ -49,11 +53,16 @@ export const MenuBar = ({
     setPriceRange(value);
   }
 
+  function handleSizeRangeChange(value) {
+    setSizeRange(value);
+  }
+
   function updateFilters() {
     onFilterDress(
       sizeFilters.map((s) => s.value),
       colorFilters.map((c) => c.value),
-      priceRange
+      priceRange,
+      sizeRange
     );
   }
 
@@ -90,8 +99,17 @@ export const MenuBar = ({
         <div className="menuFilters">
           <PriceSlider
             defaultRange={[MIN_PRICE, MAX_PRICE]}
-            priceRange={priceRange}
-            onPriceChange={handlePriceRangeChange}
+            name="Price"
+            range={priceRange}
+            step={100}
+            onRangeChange={handlePriceRangeChange}
+          />
+          <PriceSlider
+            defaultRange={[MIN_SIZE, MAX_SIZE]}
+            name="Size Slider"
+            range={sizeRange}
+            step={2}
+            onRangeChange={handleSizeRangeChange}
           />
           <DropdownFilter
             filterName="Color"

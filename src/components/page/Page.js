@@ -10,8 +10,9 @@ export const Page = () => {
 
   const sortedDresses = sortDressesByPrice(filteredDresses, sortOrder);
 
-  function handleFilterDress(sizes, colors, priceRange) {
+  function handleFilterDress(sizes, colors, priceRange, sizeRange) {
     const [minPrice, maxPrice] = priceRange;
+    const [minSize, maxSize] = sizeRange;
 
     const filterSizes = (dress) =>
       sizes.length === 0 || sizes.includes(dress.size);
@@ -23,9 +24,17 @@ export const Page = () => {
       (!minPrice || dress.price >= minPrice) &&
       (!maxPrice || dress.price <= maxPrice);
 
+    const filterSizeRange = (dress) =>
+      (!minSize || dress.size >= minSize) &&
+      (!maxSize || dress.size <= maxSize);
+
     setFilteredDresses(
       dressData.filter(
-        (d) => filterSizes(d) && filterColors(d) && filterPriceRange(d)
+        (d) =>
+          filterSizes(d) &&
+          filterColors(d) &&
+          filterPriceRange(d) &&
+          filterSizeRange(d)
       )
     );
   }
